@@ -1,2 +1,3 @@
-You Are Awesome App in Ch.1 of Prof John Gallauger's SwiftUI Course.
-
+Prof. John Gallauger's SwiftUI course. 
+Ch.1 
+You Are Awesome App.
