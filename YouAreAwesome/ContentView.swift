@@ -11,27 +11,42 @@ struct ContentView: View {
   
   @State private var message: String = "I Am A Progammer!"
   
-    var body: some View {
+  var body: some View {
+    
+    VStack {
+      Spacer()
       
-        VStack {
-            Image(systemName: "swift")
-            .resizable()
-            .scaledToFit()
-            .foregroundStyle(.orange)
-            Text(message)
-            .font(.largeTitle)
-            .fontWeight(.heavy)
-            .foregroundStyle(.red)
-          
-          Button("Click Me!") {
-            message = "Awesome!"
-          }
+      Image(systemName: "swift")
+        .resizable()
+        .scaledToFit()
+        .foregroundStyle(.orange)
+        .frame(width: 200, height: 200)
+      
+      Text(message)
+        .font(.largeTitle)
+        .fontWeight(.ultraLight)
+        .foregroundStyle(.black)
+      
+      Spacer()
+      
+      HStack {
+        Button("Awesome!") {
+          message = "Awesome!"
         }
-        .padding()
-      
+        
+        Button("Great!") {
+          message = "Great!"
+        }
+      }
+      .buttonStyle(.glassProminent)
+      .font(.title2)
+      .tint(.orange)
     }
+    .padding()
+    
+  }
 }
 
 #Preview {
-    ContentView()
+  ContentView()
 }
