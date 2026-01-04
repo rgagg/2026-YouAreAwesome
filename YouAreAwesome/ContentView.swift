@@ -11,6 +11,8 @@ struct ContentView: View {
   
   @State private var messageString: String = ""
   @State private var imageName: String = ""
+  @State private var imageNumber: Int = 0
+  
   var body: some View {
     
     VStack {
@@ -29,14 +31,16 @@ struct ContentView: View {
       
       Spacer()
       
-      Button("Press Me!") {
+      Button("Show Message") {
         let message1: String = "You Are Awesome!"
         let message2: String = "You are great!"
-        let image1: String = "image0"
-        let image2: String = "image1"
         
         messageString = (messageString == message1 ? message2 : message1)
-        imageName = (imageName == image1 ? image2 : image1)
+        imageName = "image\(imageNumber)"
+
+        imageNumber += 1
+        imageNumber = (imageNumber > 9 ? 0 : imageNumber)
+        
       }
       .buttonStyle(.glassProminent)
       .font(.title2)
