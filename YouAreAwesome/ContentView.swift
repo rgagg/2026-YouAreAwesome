@@ -12,6 +12,18 @@ struct ContentView: View {
   @State private var messageString: String = ""
   @State private var imageName: String = ""
   @State private var imageNumber: Int = 0
+  @State private var messageNumber = 0
+  
+  @State private var messages: [String] = [
+    "You Are Awesome!",
+    "You are great!",
+    "Fabulous? That's you!",
+    "You make me smile!",
+    "You Swifty!",
+    "You are a code monster!",
+    "I think you are magic!",
+    "Code GOD!"
+  ]
   
   var body: some View {
     
@@ -28,19 +40,20 @@ struct ContentView: View {
         .font(.largeTitle)
         .fontWeight(.heavy)
         .foregroundStyle(.red)
+        .multilineTextAlignment(.center)
       
       Spacer()
       
       Button("Show Message") {
-        let message1: String = "You Are Awesome!"
-        let message2: String = "You are great!"
         
-        messageString = (messageString == message1 ? message2 : message1)
+        messageString = (messages[messageNumber])
+        messageNumber += 1
+        messageNumber = (messageNumber > (messages.count - 1) ? 0 : messageNumber)
+        
         imageName = "image\(imageNumber)"
-
+        
         imageNumber += 1
         imageNumber = (imageNumber > 9 ? 0 : imageNumber)
-        
       }
       .buttonStyle(.glassProminent)
       .font(.title2)
