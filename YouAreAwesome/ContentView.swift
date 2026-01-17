@@ -28,19 +28,22 @@ struct ContentView: View {
   var body: some View {
     
     VStack {
-      Spacer()
-      
-      Image(imageName)
-        .resizable()
-        .scaledToFit()
-        .clipShape(RoundedRectangle(cornerRadius: 30))
-        .shadow(radius: 30)
       
       Text(messageString)
         .font(.largeTitle)
         .fontWeight(.heavy)
         .foregroundStyle(.red)
         .multilineTextAlignment(.center)
+        .minimumScaleFactor(0.5)
+        .frame(height: 100)
+        .animation(.easeInOut(duration: 0.2), value: messageString)
+      
+      Image(imageName)
+        .resizable()
+        .scaledToFit()
+        .clipShape(RoundedRectangle(cornerRadius: 30))
+        .shadow(radius: 30)
+        .animation(.easeInOut(duration: 0.4), value: imageName)
       
       Spacer()
       
