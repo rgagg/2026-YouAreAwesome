@@ -11,8 +11,6 @@ struct ContentView: View {
   
   @State private var messageString: String = ""
   @State private var imageName: String = ""
-  @State private var imageNumber: Int = 0
-  @State private var messageNumber = 0
   
   @State private var messages: [String] = [
     "You Are Awesome!",
@@ -49,14 +47,10 @@ struct ContentView: View {
       
       Button("Show Message") {
         
-        messageString = (messages[messageNumber])
-        messageNumber += 1
-        messageNumber = (messageNumber > (messages.count - 1) ? 0 : messageNumber)
+        messageString = (messages[Int.random(in: 0..<messages.count)])
         
-        imageName = "image\(imageNumber)"
+        imageName = "image\(Int.random(in: 0...9))"
         
-        imageNumber += 1
-        imageNumber = (imageNumber > 9 ? 0 : imageNumber)
       }
       .buttonStyle(.glassProminent)
       .font(.title2)
