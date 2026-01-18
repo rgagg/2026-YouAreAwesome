@@ -6,13 +6,19 @@
 //
 
 import SwiftUI
+import AVFAudio
 
 struct ContentView: View {
   
   @State private var messageString: String = ""
   @State private var imageName: String = ""
+  @State private var soundName: String = ""
   @State private var lastMessageNumber = -1 //Will never test true in button
   @State private var lastImageNumber = -1 //Will never test true in button
+  @State private var lastSoundNumber = -1 //Will never test true in button
+  @State private var audioPlayer: AVAudioPlayer! //Initialise audio player without data
+  let numberIfImages: Int = 10 //Images labed image0-image9
+  let numberOfSounds: Int = 6 //Sounds labeled sound0-sound5
   
   @State private var messages: [String] = [
     "You Are Awesome!",
@@ -49,8 +55,9 @@ struct ContentView: View {
       
       Button("Show Message") {
         
-        var messageNumber: Int = Int.random(in: 0..<messages.count)
-        var imageNumber: Int = Int.random(in: 0...9)
+        var messageNumber: Int
+        var imageNumber: Int
+        var soundNumber: Int
         
         repeat {
           messageNumber = Int.random(in: 0..<messages.count)
@@ -59,10 +66,29 @@ struct ContentView: View {
         messageString = (messages[messageNumber])
 
         repeat {
-          imageNumber = Int.random(in: 0...9)
+          imageNumber = Int.random(in: 0..<numberIfImages)
         } while imageNumber == lastImageNumber
         lastImageNumber = imageNumber
         imageName = "image\(imageNumber)"
+        
+        
+        repeat {
+          soundNumber = Int.random(in: 0..<numberOfSounds)
+        } while soundNumber == lastSoundNumber
+        lastSoundNumber = soundNumber
+        soundName = "sound\(soundNumber)"
+
+        guard let soundFile = NSDataAsset(name: soundName) else {
+          print("🤬 Could not find sound file \(soundName)")
+          return
+        }
+        
+        do {
+          audioPlayer = try AVAudioPlayer(data: soundFile.data)
+          audioPlayer.play()
+        } catch {
+          print("🤬 Error: \(error.localizedDescription) creating audio player")
+        }
         
       }
       .buttonStyle(.glassProminent)
