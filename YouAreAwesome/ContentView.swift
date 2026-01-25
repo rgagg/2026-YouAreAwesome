@@ -89,8 +89,8 @@ struct ContentView: View {
         }
         .buttonStyle(.glassProminent)
         .font(.title2)
-        .tint(.orange)
       }
+      .tint(.accentColor)
     }
     .padding()
     
@@ -137,6 +137,11 @@ struct ContentView: View {
   
 }
 
-#Preview {
+#Preview("Light Mode") {
   ContentView()
+    .preferredColorScheme(.light)
+}
+#Preview("Dark Mode") {
+  ContentView()
+    .preferredColorScheme(.dark)
 }
