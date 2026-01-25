@@ -17,7 +17,9 @@ struct ContentView: View {
   @State private var lastImageNumber = -1 //Will never test true in button
   @State private var lastSoundNumber = -1 //Will never test true in button
   @State private var audioPlayer: AVAudioPlayer! //Initialise audio player without data
-  let numberIfImages: Int = 10 //Images labed image0-image9
+  @State private var soundIsOn: Bool = true
+  
+  let numberOfImages: Int = 10 //Images labed image0-image9
   let numberOfSounds: Int = 6 //Sounds labeled sound0-sound5
   
   @State private var messages: [String] = [
@@ -53,51 +55,86 @@ struct ContentView: View {
       
       Spacer()
       
-      Button("Show Message") {
+      HStack {
+        Text("Sound On:")
+        Toggle("Sound On:", isOn: $soundIsOn)
+          .labelsHidden()
+          .onChange(of: soundIsOn) { oldValue, newValue in
+            if audioPlayer != nil && audioPlayer.isPlaying {
+              audioPlayer.stop()
+            }
+          }
         
-        var messageNumber: Int
-        var imageNumber: Int
-        var soundNumber: Int
+        Spacer()
         
-        repeat {
-          messageNumber = Int.random(in: 0..<messages.count)
-        } while messageNumber == lastMessageNumber
-        lastMessageNumber = messageNumber
-        messageString = (messages[messageNumber])
-
-        repeat {
-          imageNumber = Int.random(in: 0..<numberIfImages)
-        } while imageNumber == lastImageNumber
-        lastImageNumber = imageNumber
-        imageName = "image\(imageNumber)"
-        
-        
-        repeat {
-          soundNumber = Int.random(in: 0..<numberOfSounds)
-        } while soundNumber == lastSoundNumber
-        lastSoundNumber = soundNumber
-        soundName = "sound\(soundNumber)"
-
-        guard let soundFile = NSDataAsset(name: soundName) else {
-          print("🤬 Could not find sound file \(soundName)")
-          return
+        Button("Show Message") {
+          
+          var messageNumber: Int
+          var imageNumber: Int
+          var soundNumber: Int
+          
+          messageNumber = nonRepeatingRandom(lastnumber: lastMessageNumber, upperBound: messages.count)
+          lastMessageNumber = messageNumber
+          messageString = messages[messageNumber]
+          
+          imageNumber = nonRepeatingRandom(lastnumber: lastMessageNumber, upperBound: numberOfImages)
+          lastImageNumber = imageNumber
+          imageName = "image\(imageNumber)"
+          
+          soundNumber = nonRepeatingRandom(lastnumber: lastMessageNumber, upperBound: numberOfSounds)
+          lastSoundNumber = soundNumber
+          if soundIsOn == true {
+            playSound(soundName: "sound\(soundNumber)")
+          }
         }
-        
-        do {
-          audioPlayer = try AVAudioPlayer(data: soundFile.data)
-          audioPlayer.play()
-        } catch {
-          print("🤬 Error: \(error.localizedDescription) creating audio player")
-        }
-        
+        .buttonStyle(.glassProminent)
+        .font(.title2)
+        .tint(.orange)
       }
-      .buttonStyle(.glassProminent)
-      .font(.title2)
-      .tint(.orange)
     }
     .padding()
     
   }
+  
+  // Functions
+  func playSound(soundName: String) {
+    /*
+     Import needed module
+     Import AVFAudio
+     
+     Declare audio player
+     @State private var audioPlayer: AVFAudioPlayer!
+     
+     Use the follering function call ensuring you use a
+     sound file in the asset catalog
+    */
+    
+    if audioPlayer != nil && audioPlayer.isPlaying {
+      audioPlayer.stop()
+    }
+    
+    guard let soundFile = NSDataAsset(name: soundName) else {
+      print("🤬 Could not find sound file \(soundName)")
+      return
+    }
+    do {
+      audioPlayer = try AVAudioPlayer(data: soundFile.data)
+      audioPlayer.play()
+    } catch {
+      print("🤬 Error: \(error.localizedDescription) creating audio player")
+    }
+  }
+  
+  
+  func nonRepeatingRandom(lastnumber: Int, upperBound: Int) -> Int {
+    var newNumber: Int
+    
+    repeat {
+      newNumber = Int.random(in: 0..<upperBound)
+    } while newNumber == lastnumber
+    return newNumber
+  }
+  
 }
 
 #Preview {
